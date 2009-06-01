@@ -63,7 +63,7 @@ function record_count
 }
 
 # Read apache statistics into a temporary file
-FULL_URL="$HOST$URI"
+FULL_URL="$HOST/$URI"
 printf "Getting Apache statistcs from %s\n" "$FULL_URL"
 wget "$FULL_URL" -o /dev/null
 
