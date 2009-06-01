@@ -27,6 +27,7 @@ declare -r DATA_FOLDER=/tmp/ganglia
 declare -r DATA_FILE="${DATA_FOLDER}/apache-stats"
 declare -r URI="server-status?auto"
 declare -r HOST=$1
+declare -r HOSTIP=$(host $HOST | sed -e 's/$HOST has address //')
 
 # Sanity checks
 if test -z "$HOST" ; then
@@ -59,7 +60,7 @@ function record_count
     GANGLIA_TYPE=$3
     GANGLIA_VALUE=`grep "$LOOKUP_VAR[^_]" "$DATA_FILE" | awk '{print $2}'`
     printf "Absolute value of $GANGLIA_NAME: $GANGLIA_VALUE\n"
-    $GMETRIC --type "$GANGLIA_TYPE" --name "$GANGLIA_NAME" --value $GANGLIA_VALUE --spoof=$HOST
+    $GMETRIC --type "$GANGLIA_TYPE" --name "$GANGLIA_NAME" --value $GANGLIA_VALUE --spoof="$HOSTIP:$HOST"
 }
 
 # Read apache statistics into a temporary file
